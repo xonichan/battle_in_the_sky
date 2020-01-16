@@ -9,7 +9,12 @@ canvas.height = window.innerHeight;
 //canvas.style.backgroundColor = "dimgrey";
 
 var ma = new Image();
-ma.src = "./img/ma.png";
+var bgImage = new Image();
+var enemyImage = new Image(); 
+
+ma.src = "./img/spaceship_low.png";
+bgImage.src = "./img/Space_low.png";
+enemyImage.src = "./img/enemy1.png";
 
 canvas.addEventListener('touchmove', function (event) {
 
@@ -24,9 +29,6 @@ canvas.addEventListener('touchstart', function (event) {
 }, false);
 
 
-
-
-
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -35,11 +37,21 @@ var i = 0;
 var bullet = [];
 var enemy = [];
 
+
+var backgroundImage = {
+    bgX: 0,
+    bgY: 0,
+    draw: function () {
+        ctx.drawImage(bgImage, this.bgX, this.bgY);
+    }  
+}
+
+
 var player = {
     x: canvas.width / 2 - 25,
     y: canvas.height - 100,
-    pW: 50,
-    pH: 70,
+    pW: 80,
+    pH: 78,
     timer: 0,
     bullets: 0,
     bulletsShot: 0,
@@ -50,16 +62,19 @@ var player = {
 }
 
 var dEnemy = {
-    enemyX: (canvas.width / 2) - 10,
+    enemyX: (canvas.width / 2) - 32,
     enemyY: 30,
-    enemyW: 40,
-    enemyH: 40,
+    enemyW: 65,
+    enemyH: 67,
     draw: function () {
         ctx.beginPath();
         ctx.rect(this.enemyX, this.enemyY, this.enemyW, this.enemyH);
         ctx.fillStyle = "red";
         ctx.fill();
         ctx.closePath();
+    },
+    drawEnemyImage: function () {
+        ctx.drawImage(enemyImage, this.enemyX, this.enemyY);
     },
     drawStar: function (cx, cy, spikes, outerRadius, innerRadius) {
         let rot = Math.PI / 2 * 3;
@@ -111,6 +126,7 @@ function drawWin() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    backgroundImage.draw();
     player.drawAirplane();
 
 
@@ -137,7 +153,7 @@ function draw() {
         if (player.bullets < 5) {
             bullet.push
                 ({
-                    x: player.x + player.pW / 2 - 5 / 2,
+                    x: player.x + player.pW / 2 - 5/2,
                     y: player.y,
                     vx: 0,
                     vy: 10,
@@ -152,7 +168,7 @@ function draw() {
         player.bullets = 0;
     }
 
-    dEnemy.draw();
+    dEnemy.drawEnemyImage();
 }
 
 var timerId = setInterval(draw, 20);
