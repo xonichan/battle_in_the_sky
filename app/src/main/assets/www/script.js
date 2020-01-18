@@ -1,16 +1,16 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d');
 
+//var audio = new Audio("ost-battleinthesky-1.mp3");
+//audio.play();
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-//canvas.width = 288;
-//canvas.height = 512;
-//canvas.style.backgroundColor = "dimgrey";
 
 var ma = new Image();
 var bgImage = new Image();
 var enemyImage = new Image(); 
+
 
 ma.src = "./img/spaceship_low.png";
 bgImage.src = "./img/Space_low.png";
@@ -118,7 +118,6 @@ var dBullet = {
 }
 
 function drawWin() {
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = "32px Arial";
     ctx.fillStyle = "chartreuse";
     ctx.fillText("Ты выиграл!", canvas.width / 2 - 100, canvas.height / 2 + 20);

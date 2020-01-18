@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Battle-in-the-Sky</string>
+    <string name="textview">TextView</string>
+    <string name="textInfo1">Made by On1</string>
+    <string name="textInfo2">Test Manager: My beloved Wife</string>
+    <string name="textInfo3">Testers: children Leonard and Violet</string>
 </resources>

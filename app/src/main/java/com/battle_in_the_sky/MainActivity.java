@@ -1,15 +1,16 @@
 package com.battle_in_the_sky;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btnStart;
+    Button btnInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnStart = (Button) findViewById(R.id.btnStart);
         btnStart.setOnClickListener(this);
+        btnInfo = (Button) findViewById(R.id.btnInfo);
+        btnInfo.setOnClickListener(this);
     }
 
     @Override
@@ -27,6 +30,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(this, Game.class);
                 startActivity(intent);
                 break;
+
+            case  R.id.btnInfo:
+                Intent intent2= new Intent(this, Info.class);
+                startActivity(intent2);
+                break;
+
+
             default:
                 break;
         }
