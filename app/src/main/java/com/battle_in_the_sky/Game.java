@@ -19,7 +19,7 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
 
-        web = (WebView) findViewById(R.id.webView);
+        web = findViewById(R.id.webView);
         web.getSettings().setJavaScriptEnabled(true);
 
         web.setWebViewClient(new WebViewClient() {
@@ -39,7 +39,6 @@ public class Game extends AppCompatActivity {
 
     @Override
     public void onResume() {
-
         web.reload();
         mediaPlayer.start();
         super.onResume();
@@ -47,11 +46,10 @@ public class Game extends AppCompatActivity {
 
     @Override
     public void onRestart() {
-
         web.reload();
-        super.onResume();
+        mediaPlayer.start();
+        super.onRestart();
     }
-
 
 
     @Override

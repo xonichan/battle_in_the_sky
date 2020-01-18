@@ -17,22 +17,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnStart = (Button) findViewById(R.id.btnStart);
+        btnStart = findViewById(R.id.btnStart);
         btnStart.setOnClickListener(this);
-        btnInfo = (Button) findViewById(R.id.btnInfo);
+        btnInfo = findViewById(R.id.btnInfo);
         btnInfo.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case  R.id.btnStart:
+            case R.id.btnStart:
                 Intent intent = new Intent(this, Game.class);
                 startActivity(intent);
                 break;
 
-            case  R.id.btnInfo:
-                Intent intent2= new Intent(this, Info.class);
+            case R.id.btnInfo:
+                Intent intent2 = new Intent(this, Info.class);
                 startActivity(intent2);
                 break;
 

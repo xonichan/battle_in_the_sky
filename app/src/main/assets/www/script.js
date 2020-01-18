@@ -1,31 +1,30 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d');
 
-//var audio = new Audio("ost-battleinthesky-1.mp3");
-//audio.play();
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 var ma = new Image();
 var bgImage = new Image();
-var enemyImage = new Image(); 
-
+var enemyImage = new Image();
 
 ma.src = "./img/spaceship_low.png";
 bgImage.src = "./img/Space_low.png";
 enemyImage.src = "./img/enemy1.png";
 
 canvas.addEventListener('touchmove', function (event) {
-
-    player.x = event.touches[0].pageX - player.pW / 2;
-    player.y = event.touches[0].pageY - player.pH * 2;
-
+    player.movePlayer(event.touches[0].pageX, event.touches[0].pageY);
 }, false);
 
 var playerShot = false;
 canvas.addEventListener('touchstart', function (event) {
-    playerShot = true;
+    if (flafWin) {
+        playerShot = true;
+    }
+    else {
+        document.location.reload();
+    }
+
 }, false);
 
 
@@ -36,16 +35,16 @@ function getRandomInt(min, max) {
 var i = 0;
 var bullet = [];
 var enemy = [];
-
+var playerSpeed = 5;
+var flafWin = true;
 
 var backgroundImage = {
     bgX: 0,
     bgY: 0,
     draw: function () {
         ctx.drawImage(bgImage, this.bgX, this.bgY);
-    }  
+    }
 }
-
 
 var player = {
     x: canvas.width / 2 - 25,
@@ -58,6 +57,20 @@ var player = {
     hits: 0,
     drawAirplane: function () {
         ctx.drawImage(ma, this.x, this.y);
+    },
+    movePlayer: function (touchX, touchY) {
+        if (this.x > touchX - player.pW / 2 && this.x != touchX - player.pW / 2) {
+            this.x = this.x - playerSpeed;
+        }
+        if (this.x < touchX - player.pW / 2 && this.x != touchX - player.pW / 2) {
+            this.x = this.x + playerSpeed;
+        }
+        if (this.y > touchY - player.pH * 2 && this.y != touchY - player.pH * 2) {
+            this.y = this.y - playerSpeed;
+        }
+        if (this.y < touchY - player.pH * 2 && this.y != touchY - player.pH * 2) {
+            this.y = this.y + playerSpeed;
+        }
     }
 }
 
@@ -121,6 +134,12 @@ function drawWin() {
     ctx.font = "32px Arial";
     ctx.fillStyle = "chartreuse";
     ctx.fillText("Ты выиграл!", canvas.width / 2 - 100, canvas.height / 2 + 20);
+
+    input = document.createElement("input");
+    input.type = "button";
+    input.value = "Remove";
+    input.onclick = remove_market_meta('MarkeID9');
+    fragment.appendChild(input);
 }
 
 function draw() {
@@ -128,46 +147,50 @@ function draw() {
     backgroundImage.draw();
     player.drawAirplane();
 
+    if (flafWin) {
+        for (i = 0; i < bullet.length; i++) {
+            bullet[i].x += bullet[i].vx;
+            bullet[i].y -= bullet[i].vy
+            dBullet.draw();
+            if (bullet[i].x > dEnemy.enemyX && bullet[i].x < dEnemy.enemyX + dEnemy.enemyW) {
+                if (bullet[i].y < 50 && bullet[i].y > 30) {
+                    player.hits++;
 
-    for (i = 0; i < bullet.length; i++) {
-        bullet[i].x += bullet[i].vx;
-        bullet[i].y -= bullet[i].vy
-        dBullet.draw();
-        if (bullet[i].x > dEnemy.enemyX && bullet[i].x < dEnemy.enemyX + dEnemy.enemyW) {
-            if (bullet[i].y < 50 && bullet[i].y > 30) {
-                player.hits++;
+                    if (player.hits == 30) {
+                        flafWin = false;
+                    }
 
-                if (player.hits == 30) {
-                    clearInterval(timerId);
-                    drawWin();
+                    dEnemy.drawStar(dEnemy.enemyX + dEnemy.enemyW / 2, dEnemy.enemyY + dEnemy.enemyW / 2, 10, dEnemy.enemyW, dEnemy.enemyW / 2);
+                    dEnemy.enemyY = getRandomInt(10, 60);
+                    dEnemy.enemyX = getRandomInt(10, 270);
                 }
-
-                dEnemy.drawStar(dEnemy.enemyX + dEnemy.enemyW / 2, dEnemy.enemyY + dEnemy.enemyW / 2, 10, dEnemy.enemyW, dEnemy.enemyW / 2);
-                dEnemy.enemyY = getRandomInt(10, 60);
-                dEnemy.enemyX = getRandomInt(10, 270);
             }
         }
-    }
-    if (playerShot) {
-        if (player.bullets < 5) {
-            bullet.push
-                ({
-                    x: player.x + player.pW / 2 - 5/2,
-                    y: player.y,
-                    vx: 0,
-                    vy: 10,
-                });
-            player.bulletsShot++;
-            player.bullets++;
+        if (playerShot) {
+            if (player.bullets < 5) {
+                bullet.push
+                    ({
+                        x: player.x + player.pW / 2 - 5 / 2,
+                        y: player.y,
+                        vx: 0,
+                        vy: 10,
+                    });
+                player.bulletsShot++;
+                player.bullets++;
+            }
         }
-    }
 
-    player.timer++;
-    if (player.timer % 12 == 0) {
-        player.bullets = 0;
-    }
+        player.timer++;
+        if (player.timer % 12 == 0) {
+            player.bullets = 0;
+        }
 
-    dEnemy.drawEnemyImage();
+        dEnemy.drawEnemyImage();
+    }
+    else {
+        drawWin();
+        clearInterval(timerId);
+    }
 }
 
 var timerId = setInterval(draw, 20);
